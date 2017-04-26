@@ -13,11 +13,14 @@ var TYPER = function () {
     this.canvas = null;
     this.ctx = null;
 
+	
     this.words = []; // kõik sõnad
     this.word = null; // preagu arvamisel olev sõna
     this.word_min_length = 3;
     this.guessed_words = 0; // arvatud sõnade arv
 	this.miss = 0;
+	this.timeLimit = 20;
+	this.gameOver = true;
     //mängija objekt, hoiame nime ja skoori
     this.player = {name: null, score: 0};
 
@@ -44,6 +47,9 @@ TYPER.prototype = {
 
         // laeme sõnad
         this.loadWords();
+		
+		// küsime mängija andmed
+        this.loadPlayerData();
     },
 
     loadPlayerData: function () {
@@ -56,6 +62,18 @@ TYPER.prototype = {
             p_name = "Tundmatu";
 
         }
+		
+		this.player = {name: p_name, score: 0, Id: parseInt(1000+Math.random()*999999)};
+        this.playerArray=JSON.parse(localStorage.getItem('player'));
+
+        if(!this.playerArray || this.playerArray.length===0){
+            this.playerArray=[];
+        }
+
+        this.playerArray.push(this.player);
+        console.log("lisatud");
+
+        localStorage.setItem("player", JSON.stringify(this.playerArray));
 
         // Mänigja objektis muudame nime
         this.player.name = p_name; // player =>>> {name:"Romil", score: 0}
@@ -94,11 +112,7 @@ TYPER.prototype = {
                 typerGame.words = structureArrayByWordLength(words_from_file);
                 console.log(typerGame.words);
 
-                // küsime mängija andmed
-                typerGame.loadPlayerData();
 
-                // kõik sõnad olemas, alustame mänguga
-                typerGame.start();
             }
         };
 
@@ -111,12 +125,32 @@ TYPER.prototype = {
         // Tekitame sõna objekti Word
         this.generateWord();
         //console.log(this.word);
+		this.gameStop = parseInt(new Date().getTime() / 1000 + this.timeLimit);
         this.drawAll();
-
         // Kuulame klahvivajutusi
         window.addEventListener('keypress', this.keyPressed.bind(this));
-
     },
+	
+	restart: function () {
+		 var again = confirm("Score: " + this.player.score +
+                        "\nPlay again?");
+                    if (again) {
+                        console.log(this.guessed_words);
+                        this.guessed_words = 0;
+                        this.player.score = 0;
+
+                       // this.saveScore();
+
+                        this.generateWord();
+                      //  this.drawAll();
+                        this.gameStop = parseInt(new Date().getTime() / 1000 + this.timeLimit);
+
+                        console.log(this.player.score);
+                    } 
+					location.reload(true);
+					$("#SplashScreen").show();
+					$("#typer").hide();
+	},
 
     drawAll: function () {
 
@@ -125,6 +159,15 @@ TYPER.prototype = {
         //console.log('joonistab');
         //joonista sõna
         this.word.Draw();
+		var currentTime = parseInt(new Date().getTime() / 1000);
+        var timeLeft = this.gameStop - currentTime;
+		document.getElementById("timer").style.color = 'black';
+        document.getElementById("timer").innerHTML = "Timeleft: " + timeLeft;
+		
+		if (timeLeft <= 0 && !this.gameOver) {
+			this.restart();
+			this.gameOver = true;
+		}
     },
 
     generateWord: function () {
@@ -162,18 +205,13 @@ TYPER.prototype = {
 			else if (letter != this.word.left.charAt(0)) {
 				this.miss += 1;
 
-                 // blink
+                 // blink if wrong letter is pressed
 				
                  document.body.style.background = "red";
 					
                  window.setTimeout(function () {
-				 document.body.style.background = "white";}, 100);
-				
-			 
+				 document.body.style.background = "white";}, 100);			 
 			}
-			
-	
-				
 
             // kas sõna sai otsa, kui jah - loosite uue sõna
 
@@ -185,16 +223,21 @@ TYPER.prototype = {
                 this.player.score = this.guessed_words;
 
                 //loosin uue sõna
-                this.generateWord();
+                var currentTime = parseInt(new Date().getTime() / 1000);
+                if (currentTime < this.gameStop) {
+                    this.generateWord();
+                    console.log(this.player.score);
+                } else {
+					if(!this.gameOver)
+					{
+						this.gameOver = true;
+						this.restart();
+					}
+                }
             }
-
             //joonistan uuesti
             this.word.Draw();
         }
-		
-
-		
-
     };
 	// keypress end
 
@@ -229,7 +272,7 @@ function structureArrayByWordLength(words) {
 var requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
+        window.mozRequestAnimationFrame /**/||
         function (callback) {
             window.setTimeout(callback, 1000 / 60);
         };
@@ -239,17 +282,3 @@ window.onload = function () {
     var typerGame = new TYPER();
     window.typerGame = typerGame;
 };
-
-/*var checkIfNight = 0;
-var nightModeActive = 0
-function nightMode() {
-    checkIfNight = (checkIfNight + 1);
-    if (checkIfNight % 2 == 1) {
-        document.getElementById('nightMode').innerHTML = '<style>canvas{background-color: #000000;};</style>';
-		nightModeActive = 1;
-    }
-    if (checkIfNight % 2 == 0) {
-        document.getElementById('nightMode').innerHTML = '<style>canvas{background-color: white;};</style>';
-		nightModeActive = 0;	
-    }
-}*/

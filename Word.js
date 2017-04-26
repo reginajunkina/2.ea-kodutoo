@@ -20,11 +20,6 @@ Word.prototype = {
         // Canvasele joonistamine
         this.ctx.textAlign = 'center';
         this.ctx.font = '70px Courier';
-        /*if (nightModeActive == 1) {
-            this.ctx.fillStyle = 'grey';
-        } else {
-            this.ctx.fillStyle = 'black';
-        }*/
 
 
         // 	// Joonistame sõna, mis on järel / tekst, x, y
