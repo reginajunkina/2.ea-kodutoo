@@ -13,14 +13,15 @@ function Word(word, canvas, ctx) {
 
 Word.prototype = {
     Draw: function () {
-
+		this.ctx.fillStyle = 'white';
         //Tühjendame canvase
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Canvasele joonistamine
+		
         this.ctx.textAlign = 'center';
         this.ctx.font = '70px Courier';
-
+		
 
         // 	// Joonistame sõna, mis on järel / tekst, x, y
         this.ctx.fillText(this.left, this.canvas.width / 2, this.canvas.height / 2);

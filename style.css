@@ -7,30 +7,109 @@
 		width: 100%;
 		height: 100%;
 		
+		
+	
+		
+		
+	}
+	
+	#SplashScreen{
+		padding-left: 32%;
 	}
 
 	canvas {
 		position: absolute;
-		
+		color:white; 
 	} 
 	
+	#main{
+		position: relative;
+
+		
+	}
+	
+	#buttons{
+		position: relative;
+		padding-left: 4%;
+		
+		
+	}
+	
+	input[type=button] {
+		margin: 40px;
+		padding:5px 15px; 
+		background: red; 
+		border:2px;
+		cursor:pointer;
+		-webkit-border-radius: 5px;
+		border-radius: 5px; 
+		border: 1px solid #999;
+	}
+	
+	input[type=button]:hover {
+    border: 1px solid #999;
+    color: yellow;
+	}
+	
+	input[type=button]:active {
+    border: 1px solid #999;
+    color: yellow;
+	background: blue; 
+	}
+
+	section{
+		width: 480px;
+		background-color:red; 
+		position: relative;
+		
+		
+	
+	}
+	
+	h1{ font-family: Impact, 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+		font-size: 1200% ;
+		color: yellow;
+		text-shadow: 4px 3px 0px red, 9px 8px 0px blue;
+	}
+	
+	
 	.newGame {
-    height: 15%;
+	height: 15%;
     align-content: center;
     align-items: center;
     text-align: center;
     padding-top: 5%;
+	
+	
 	 font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
-}
+	}
 p {
     font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
     font-size: 125%;
     text-align: left;
+	
     
 }
 
 #timer {
-    font-family: 'font-family: 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
-    font-size: 125%;
+	padding-left: 5%;
+    font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+    font-size: 180%;
 }
 
+#player_score {
+	padding-right: 5%;
+    font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+    font-size: 180%;
+	text-align: right;
+}
+#player{
+	font-family:'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
+    font-size: 125%;
+	text-align: right;
+	
+}
+
+
+
+	
